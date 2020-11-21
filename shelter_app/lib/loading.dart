@@ -18,7 +18,6 @@ class _LoadingState extends State<Loading> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset('images/agnel.jpg'),
                 SizedBox(
                   height: 20,
                 ),

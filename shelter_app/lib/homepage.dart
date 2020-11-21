@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shelter_app/loading.dart';
-import 'package:shelter_app/login.dart';
+import 'package:shelter_app/screens/Welcome/welcome.dart';
 
 
 class Home extends StatefulWidget {
@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
     if (start == false) {
       return Loading();
     } else {
-      return Login();
+      return WelcomeScreen();
       }
     }
   }

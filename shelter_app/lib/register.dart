@@ -1,12 +1,15 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shelter_app/constraints.dart';
 import 'package:shelter_app/login.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'dart:async';
+import 'dart:io';
 import 'components/rounded_button.dart';
 import 'components/rounded_input.dart';
 
@@ -30,6 +33,7 @@ class _HomeState extends State<Register> {
       formDob = "Date of Birth",
       userid;
   int aadharCardNo, mobileNo, age;
+  File idPhoto;
   List states = [
         'Maharashtra',
         'Delhi'
@@ -37,10 +41,97 @@ class _HomeState extends State<Register> {
       genders = ['Male', 'Female', 'Other'],
       districts = [];
   User temp;
+  String imagestatus = 'Upload your picture';
 
   
   final CollectionReference fire =
       FirebaseFirestore.instance.collection('UserData');
+
+ 
+
+  Future<bool> fileUpload() async {
+    try {
+      final FirebaseStorage storage = FirebaseStorage(
+          storageBucket: 'gs://shelterapp-e4ec7.appspot.com/');
+      final StorageReference uploader = storage.ref().child(userid.toString());
+      StorageUploadTask task = uploader.putFile(idPhoto);
+      await task.onComplete;
+      return true;
+    } catch (e) {
+      Alert(
+        context: context,
+        title: 'Error',
+        desc: e.message,
+        buttons: [
+          DialogButton(
+            radius: BorderRadius.circular(25),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            color: Colors.blue,
+            child: Text(
+              'Okay',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 25,
+              ),
+            ),
+          ),
+        ],
+        style: AlertStyle(
+          backgroundColor: Colors.cyan,
+          titleStyle: TextStyle(fontWeight: FontWeight.bold),
+          descStyle: TextStyle(color: Colors.red),
+          buttonAreaPadding: EdgeInsets.all(15),
+        ),
+      ).show();
+      return false;
+    }
+  }
+
+      final snackbar = SnackBar(
+                content: Text(
+                  'Photo Added',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: Colors.blue,
+                duration: Duration(seconds: 1),
+              );
+              
+      Future getcameraimage() async {
+        ImagePicker picker= ImagePicker();
+        PickedFile pickedFile;
+        pickedFile = await picker.getImage(
+          source: ImageSource.camera,);
+        setState(() {
+          if (pickedFile!= null){
+            idPhoto=File(pickedFile.path);
+            imagestatus = 'View/Edit your picture  ';
+          }
+          else{
+            print("No image selected");
+          }
+        });
+      }
+
+      Future getgalleryimage() async {
+          ImagePicker picker= ImagePicker();
+        PickedFile pickedFile;
+        pickedFile = await picker.getImage(
+          source: ImageSource.gallery,);
+        setState(() {
+          if (pickedFile!= null){
+            idPhoto=File(pickedFile.path);
+            imagestatus = 'View/Edit your picture  ';
+          }
+          else{
+            print("No image selected");
+          }
+        });
+        }
 
       bool checkdetails() {
     if (email != null &&
@@ -51,7 +142,8 @@ class _HomeState extends State<Register> {
         aadharCardNo.toString().length == 12 &&
         address1 != null &&
         city != null &&
-        state != null) {
+        state != null&&
+        idPhoto!=null) {
       return true;
     } else {
       return false;
@@ -540,6 +632,337 @@ class _HomeState extends State<Register> {
                           fontSize: MediaQuery.of(context).size.height / 50,
                         ),
                       ),
+                      InkWell(
+                        onTap: () {
+                          if (idPhoto == null) {
+                            Alert(
+                              context: context,
+                              title: 'Select method',
+                              buttons: [],
+                              style: AlertStyle(
+                                backgroundColor: Colors.black,
+                                titleStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              content: Container(
+                                padding: EdgeInsets.all(25),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    FlatButton(
+                                      padding: EdgeInsets.all(10),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(25)),
+                                      onPressed: () async {
+                                        await getcameraimage();
+                                        Navigator.pop(context);
+                                        Scaffold.of(context)
+                                            .showSnackBar(snackbar);
+                                      },
+                                      color: Colors.blue,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            'Camera',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 25,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Icon(
+                                            Icons.photo_camera,
+                                            color: Colors.black,
+                                            size: 30,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    FlatButton(
+                                      padding: EdgeInsets.all(10),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(25)),
+                                      onPressed: () async {
+                                        await getgalleryimage();
+                                        Navigator.pop(context);
+                                        Scaffold.of(context)
+                                            .showSnackBar(snackbar);
+                                      },
+                                      color: Colors.blue,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            'Gallery',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 25,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Icon(
+                                            Icons.camera,
+                                            color: Colors.black,
+                                            size: 30,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ).show();
+                          } else {
+                            Alert(
+                              context: context,
+                              title: 'Your Image',
+                              buttons: [],
+                              style: AlertStyle(
+                                backgroundColor: Colors.black,
+                                titleStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              content: SingleChildScrollView(
+                                child: Container(
+                                  padding: EdgeInsets.all(20),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.white,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: Image.file(idPhoto),
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          FlatButton(
+                                            padding: EdgeInsets.all(10),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(25)),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Alert(
+                                                context: context,
+                                                title: 'Select method',
+                                                buttons: [],
+                                                style: AlertStyle(
+                                                  backgroundColor: Colors.black,
+                                                  titleStyle: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 25,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                content: Container(
+                                                  padding: EdgeInsets.all(25),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      FlatButton(
+                                                        padding:
+                                                            EdgeInsets.all(10),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        25)),
+                                                        onPressed: () async {
+                                                          await getcameraimage();
+                                                          Navigator.pop(
+                                                              context);
+                                                          Scaffold.of(context)
+                                                              .showSnackBar(
+                                                                  snackbar);
+                                                        },
+                                                        color: Colors.blue,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              'Camera',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 25,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 20,
+                                                            ),
+                                                            Icon(
+                                                              Icons
+                                                                  .photo_camera,
+                                                              color:
+                                                                  Colors.black,
+                                                              size: 30,
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 15,
+                                                      ),
+                                                      FlatButton(
+                                                        padding:
+                                                            EdgeInsets.all(10),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        25)),
+                                                        onPressed: () async {
+                                                          await getgalleryimage();
+                                                          Navigator.pop(
+                                                              context);
+                                                          Scaffold.of(context)
+                                                              .showSnackBar(
+                                                                  snackbar);
+                                                        },
+                                                        color: Colors.blue,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              'Gallery',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 25,
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                              width: 20,
+                                                            ),
+                                                            Icon(
+                                                              Icons.camera,
+                                                              color:
+                                                                  Colors.black,
+                                                              size: 30,
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ).show();
+                                            },
+                                            color: Colors.blue,
+                                            child: Text(
+                                              'Edit',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 25,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 15),
+                                          FlatButton(
+                                            padding: EdgeInsets.all(10),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(25)),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            color: Colors.blue,
+                                            child: Text(
+                                              'Okay',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 25,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ).show();
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                              color: Colors.yellow,
+                              width: 2,
+                            ),
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                imagestatus,
+                                style: TextStyle(
+                                    color: Colors.orange, fontSize: 20),
+                              ),
+                              SizedBox(
+                                width: 35,
+                              ),
+                              Icon(
+                                Icons.photo_camera,
+                                color: Colors.orange,
+                                size: 30,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '*required',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(color: Colors.red),
+                      ),
+
+
+
+
+
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 32,
                       ),
@@ -633,6 +1056,8 @@ class _HomeState extends State<Register> {
                               if (confirmation1) {
                                 bool confirmation2 = await adddetails();
                                 if (confirmation2) {
+                                  bool confirmation3=await fileUpload();
+                                  if (confirmation3){
                                   Navigator.pop(context);
                                   Alert(
                                           context: context,
@@ -654,6 +1079,9 @@ class _HomeState extends State<Register> {
                                       MaterialPageRoute(
                                         builder: (context) => Login(),
                                       ));
+                                  }else{
+                                    Navigator.pop(context);
+                                  }
                                 } else {
                                   temp.delete();
                                 }

@@ -1,26 +1,39 @@
-import 'package:firebase_authentication_tutorial/authentication_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shelter_app/services/authentication.dart';
+import 'package:shelter_app/loading.dart';
+import 'package:shelter_app/login.dart';
 
-class HomePage extends StatelessWidget {
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+
+  bool start = false;
+
+  Future<void> splash() async {
+    await Future.delayed(Duration(seconds: 5));
+    setState(() {
+      start = true;
+    });
+  }
+
+  @override
+  void initState() {
+    splash();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("HOME"),
-            RaisedButton(
-              onPressed: () {
-                context.read<AuthenticationService>().signOut();
-              },
-              child: Text("Sign out"),
-            ),
-          ],
-        ),
-      ),
-    );
+    if (start == false) {
+      return Loading();
+    } else {
+      return Login();
+      }
+    }
   }
-}
+
+
+

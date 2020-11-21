@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shelter_app/components/rounded_button.dart';
 import 'package:shelter_app/constraints.dart';
-import 'package:shelter_app/screens/Login/login_screen.dart';
-import 'package:shelter_app/screens/SignUp/sign_up.dart';
+import 'package:shelter_app/login.dart';
+import 'package:shelter_app/register.dart';
 import 'package:shelter_app/screens/Welcome/components/background.dart';
 
 
@@ -38,7 +38,7 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return LoginScreen();
+                      return Login();
                     },
                   ),
                 );
@@ -53,7 +53,7 @@ class Body extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return SignUpScreen();
+                      return Register();
                     },
                   ),
                 );

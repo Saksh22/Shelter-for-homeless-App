@@ -48,7 +48,7 @@ class _HomeState extends State<Login> {
     
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
+        appBar: new AppBar(
           backgroundColor: Colors.deepPurple[300],
           centerTitle: true,
           title: Text(

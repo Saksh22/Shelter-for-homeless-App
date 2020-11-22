@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shelter_app/constraints.dart';
 import 'package:shelter_app/login.dart';
+import 'map.dart';
 
 
 
@@ -155,7 +156,17 @@ class UserHome extends StatelessWidget {
                         height: 160.0,
                         child: 
                         InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return Map();
+                                  },
+                                ),
+                              );
+
+                          },
                           child: Card(
                             color: Colors.pink,
                             elevation: 2.0,

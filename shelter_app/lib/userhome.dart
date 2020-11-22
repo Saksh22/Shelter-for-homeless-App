@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shelter_app/constraints.dart';
 import 'package:shelter_app/login.dart';
-import 'map.dart';
+import 'map1.dart';
 
 
 
@@ -161,7 +161,7 @@ class UserHome extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return Map();
+                                    return MapsPage();
                                   },
                                 ),
                               );

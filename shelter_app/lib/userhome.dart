@@ -157,7 +157,7 @@ class UserHome extends StatelessWidget {
                         child: 
                         InkWell(
                           onTap: (){
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {

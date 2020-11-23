@@ -11,7 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'dart:io';
 import 'components/rounded_button.dart';
-import 'components/rounded_input.dart';
+
 
 class Register extends StatefulWidget {
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shelter_app/constraints.dart';
 import 'package:shelter_app/login.dart';
+import 'package:shelter_app/userprofile.dart';
 import 'map1.dart';
 
 
@@ -56,7 +57,7 @@ class UserHome extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return Login();
+                        return HomeView();
                       },
                     ),
                   );
@@ -270,7 +271,7 @@ class UserHome extends StatelessWidget {
                                       SizedBox(
                                       height: 25.0,
                                     ),
-                                    Icon(Icons.fastfood, color: Colors.white,size: 52.0,),
+                                    Icon(Icons.food_bank, color: Colors.white,size: 52.0,),
                                       SizedBox(
                                         height: 10.0,
                                       ),

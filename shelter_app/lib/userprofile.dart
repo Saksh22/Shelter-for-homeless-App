@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shelter_app/constraints.dart';
 import 'package:shelter_app/retrive.dart';
-
+import 'dart:async';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -14,7 +16,7 @@ class _HomeViewState extends State<HomeView> {
 
   List userDetails=[];
   String userId;
-
+  String idPhoto;
   
 
   fetchUserInfo() async {
@@ -37,11 +39,28 @@ class _HomeViewState extends State<HomeView> {
   }
 }
 
+Future<void> getimage() async {
+    final FirebaseStorage storage = FirebaseStorage(
+        storageBucket: 'gs://shelterapp-e4ec7.appspot.com');
+    final StorageReference downloader = storage.ref().child(userId);
+    try {
+      String url = await downloader.getDownloadURL();
+      setState(() {
+        idPhoto = url;
+      });
+    } catch (e) {
+      print(e.message);
+    }
+  }
+
+
 @override
   void initState() {
     super.initState();
     fetchUserInfo();
     fetchDatabaseList();
+    getimage();
+    
   }
 
 
@@ -68,11 +87,17 @@ class _HomeViewState extends State<HomeView> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 SizedBox(height:30),
-                CircularProfileAvatar(
-                  "D:\Github\Shelter for homeless App\shelter_app\images\welcome.jpg",
-                  borderWidth: 4.0,
-                  radius: 60.0,
-                ),
+                 CircleAvatar(
+                    radius: 85,
+                    backgroundColor: kPrimaryColor,      
+                    child: CircleAvatar(
+                      minRadius: 5.0,
+                      maxRadius: 80.0,
+                      backgroundImage: NetworkImage(idPhoto),
+                      
+                    ),
+                 ),
+                
                 
               ],
             ),
@@ -265,3 +290,4 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
+

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shelter_app/components/rounded_button.dart';
 import 'package:shelter_app/constraints.dart';
-import 'package:shelter_app/login.dart';
-import 'package:shelter_app/register.dart';
+import 'package:shelter_app/pages/login.dart';
+import 'package:shelter_app/pages/register.dart';
 import 'package:shelter_app/screens/Welcome/components/background.dart';
 
 
@@ -27,10 +27,15 @@ class Body extends StatelessWidget {
           
                 ),
             ),
-            SizedBox(height: size.height * 0.05),
+            SizedBox(height: 10),
+            Image.asset(
+              'images/welcome.jpg',
+              height: 200,
+              width: 200,
+            ),
             
             
-            SizedBox(height: size.height * 0.05),
+            SizedBox(height: 10),
             RoundedButton(
               text: "LOGIN",
               press: () {

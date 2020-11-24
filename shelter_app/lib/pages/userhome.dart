@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shelter_app/constraints.dart';
-import 'package:shelter_app/login.dart';
-import 'package:shelter_app/userprofile.dart';
+import 'package:shelter_app/pages/about_us.dart';
+import 'package:shelter_app/pages/login.dart';
+import 'package:shelter_app/pages/userprofile.dart';
 import 'map1.dart';
 
 
@@ -111,7 +112,7 @@ class UserHome extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return Login();
+                        return AboutUs();
                       },
                     ),
                   );

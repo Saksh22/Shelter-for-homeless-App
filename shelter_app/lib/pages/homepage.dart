@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shelter_app/loading.dart';
-import 'package:shelter_app/screens/Welcome/welcome.dart';
+import 'package:shelter_app/pages/welcome.dart';
 
 
 class Home extends StatefulWidget {

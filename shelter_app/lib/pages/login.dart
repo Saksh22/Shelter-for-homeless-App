@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shelter_app/constraints.dart';
-import 'package:shelter_app/register.dart';
-import 'package:shelter_app/userhome.dart';
-import 'components/rounded_button.dart';
-import 'components/rounded_input.dart';
-import 'components/rounded_password.dart';
+import 'package:shelter_app/pages/register.dart';
+import 'package:shelter_app/pages/userhome.dart';
+import '../components/rounded_button.dart';
+import '../components/rounded_input.dart';
+import '../components/rounded_password.dart';
 
 class Login extends StatefulWidget {
   @override

@@ -5,12 +5,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shelter_app/constraints.dart';
-import 'package:shelter_app/login.dart';
+import 'package:shelter_app/pages/login.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'dart:io';
-import 'components/rounded_button.dart';
+import '../components/rounded_button.dart';
 
 
 class Register extends StatefulWidget {

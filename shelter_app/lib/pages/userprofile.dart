@@ -56,10 +56,11 @@ Future<void> getimage() async {
 
 @override
   void initState() {
-    super.initState();
     fetchUserInfo();
     fetchDatabaseList();
     getimage();
+    super.initState();
+    
     
   }
 

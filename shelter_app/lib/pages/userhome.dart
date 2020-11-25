@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:shelter_app/constraints.dart';
 import 'package:shelter_app/pages/about_us.dart';
+import 'package:shelter_app/pages/helpline_page.dart';
 import 'package:shelter_app/pages/login.dart';
+import 'package:shelter_app/pages/map2.dart';
 import 'package:shelter_app/pages/userprofile.dart';
+import 'package:shelter_app/pages/welcome.dart';
 import 'map1.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 
-class UserHome extends StatelessWidget {
+class UserHome extends StatefulWidget {
 
   // ignore: non_constant_identifier_names
+
+  @override
+  _UserHomeState createState() => _UserHomeState();
+}
+
+class _UserHomeState extends State<UserHome> {
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  Future<bool>signOut() async {
+    await _firebaseAuth.signOut();
+    return true;
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +44,26 @@ class UserHome extends StatelessWidget {
               color: Colors.white70,
             ),
           ),
+          actions: <Widget>[
+                FlatButton(
+                  textColor: Colors.white,
+                  onPressed: () async{
+                    bool result = await signOut();
+                            if (result) {
+                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => WelcomeScreen(),
+                                  ));
+                            }
+
+                    
+                  },
+                  child: Text("Logout"),
+                  shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+                ),
+              ],
           
         ),
         backgroundColor: Color.fromARGB(255,21, 21, 21),
@@ -212,7 +249,16 @@ class UserHome extends StatelessWidget {
                         height: 160.0,
                         child: 
                         InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return HelpLine();
+                                  },
+                                ),
+                              );
+                          },
                           child: Card(
                             color: Colors.lightGreen,
                             elevation: 2.0,
@@ -233,7 +279,7 @@ class UserHome extends StatelessWidget {
                                         height: 10.0,
                                       ),
                                       Text(
-                                        "Caller",
+                                        "Help-Line",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -256,7 +302,16 @@ class UserHome extends StatelessWidget {
                         height: 160.0,
                         child: 
                         InkWell(
-                          onTap: (){},
+                          onTap: (){
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return FoodBank();
+                                  },
+                                ),
+                              );
+                          },
                            child: Card(
 
                             color: Colors.red,

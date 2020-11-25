@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:shelter_app/pages/about_us.dart';
 import 'package:shelter_app/pages/homepage.dart';
 
 

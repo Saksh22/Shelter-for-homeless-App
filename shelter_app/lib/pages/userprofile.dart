@@ -1,10 +1,8 @@
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shelter_app/constraints.dart';
 import 'package:shelter_app/retrive.dart';
 import 'dart:async';
-import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class HomeView extends StatefulWidget {
@@ -57,8 +55,8 @@ Future<void> getimage() async {
 @override
   void initState() {
     fetchUserInfo();
-    fetchDatabaseList();
     getimage();
+    fetchDatabaseList();
     super.initState();
     
     

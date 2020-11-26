@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shelter_app/constraints.dart';
 
 
 class FoodBank extends StatefulWidget {
@@ -165,22 +166,28 @@ class _FoodBankState extends State<FoodBank> {
     
 
     return Scaffold(
+        appBar: AppBar(
+          title:Text("Food Banks"),
+          centerTitle: true,
+          backgroundColor: kPrimaryColor,
+          
+        ),
         body:Column(children: [
           Stack(
         children: <Widget>[
                    Container(
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery.of(context).size.height-80,
                     width: double.infinity,
                     child: GoogleMap(
                 markers: Set<Marker>.of(markers.values),
                 mapType: MapType.normal,
                 initialCameraPosition:
-                    CameraPosition(target: LatLng(19.058830,72.834670), zoom: 12.0),
+                    CameraPosition(target: LatLng(19.1364,72.8296), zoom: 12.0),
                 onMapCreated: onMapCreated,
                 ),
           ),
           Positioned(
-            bottom:30,
+            top:MediaQuery.of(context).size.height-250,
             left: 10,
             child: Container(
               height:125,

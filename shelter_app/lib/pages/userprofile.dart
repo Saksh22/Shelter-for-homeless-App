@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shelter_app/constraints.dart';
+import 'package:shelter_app/loading.dart';
 import 'package:shelter_app/retrive.dart';
 import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,6 +16,7 @@ class _HomeViewState extends State<HomeView> {
   List userDetails=[];
   String userId;
   String idPhoto;
+  bool start=false;
   
 
   fetchUserInfo() async {
@@ -25,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
   
 
   fetchDatabaseList() async {
-  
+  await fetchUserInfo();
   dynamic resultant = await DatabaseManager().getUsersList(userId);
 
   if (resultant == null) {
@@ -33,11 +35,13 @@ class _HomeViewState extends State<HomeView> {
   } else {
     setState(() {
       userDetails= resultant;
+      start=true;
     });
   }
 }
 
 Future<void> getimage() async {
+    await fetchUserInfo();
     final FirebaseStorage storage = FirebaseStorage(
         storageBucket: 'gs://shelterapp-e4ec7.appspot.com');
     final StorageReference downloader = storage.ref().child(userId);
@@ -46,6 +50,7 @@ Future<void> getimage() async {
       setState(() {
         idPhoto = url;
       });
+    
     } catch (e) {
       print(e.message);
     }
@@ -57,6 +62,7 @@ Future<void> getimage() async {
     fetchUserInfo();
     getimage();
     fetchDatabaseList();
+    
     super.initState();
     
     
@@ -65,6 +71,9 @@ Future<void> getimage() async {
 
   @override
   Widget build(BuildContext context) {
+    if (start==false || idPhoto==null){
+      return Loading();
+    }else{
     return Scaffold(
       backgroundColor: Colors.deepPurple[200],
       appBar: AppBar(
@@ -90,8 +99,7 @@ Future<void> getimage() async {
                     radius: 85,
                     backgroundColor: kPrimaryColor,      
                     child: CircleAvatar(
-                      minRadius: 5.0,
-                      maxRadius: 80.0,
+                      radius: 80,
                       backgroundImage: NetworkImage(idPhoto),
                       
                     ),
@@ -290,3 +298,4 @@ Future<void> getimage() async {
   }
 }
 
+}

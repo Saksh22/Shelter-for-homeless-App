@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:shelter_app/constraints.dart';
 
 class MapsPage extends StatefulWidget {
   @override
@@ -16,7 +16,13 @@ class _MapsPageState extends State<MapsPage> {
   var currentClient;
   var currentBearing;
   bool resetToggle = false;
+  Position position;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+ 
+  getCurrentposition()async{
+    position =  await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
+  }
 
   void initMarker(specify, specifyId) async {
     var markerIdVal = specifyId;
@@ -28,7 +34,7 @@ class _MapsPageState extends State<MapsPage> {
       infoWindow: InfoWindow(title:specify['clientName']),
       icon: BitmapDescriptor.defaultMarkerWithHue(
             BitmapDescriptor.hueViolet,),
-      onTap: (){}
+      
     );
     setState(() {
       markers[markerId] = marker;
@@ -155,8 +161,10 @@ class _MapsPageState extends State<MapsPage> {
 
   @override
   void initState() {
+    getCurrentposition();
     getMarkerData();
     super.initState();
+    
     
     
   }
@@ -165,24 +173,31 @@ class _MapsPageState extends State<MapsPage> {
   Widget build(BuildContext context) {
     
     
+    
 
     return Scaffold(
+        appBar: AppBar(
+          title:Text("Shelters"),
+          centerTitle: true,
+          backgroundColor: kPrimaryColor,
+          
+        ),
         body:Column(children: [
           Stack(
         children: <Widget>[
                    Container(
-                    height: MediaQuery.of(context).size.height,
+                    height: MediaQuery.of(context).size.height-80,
                     width: double.infinity,
                     child: GoogleMap(
                 markers: Set<Marker>.of(markers.values),
                 mapType: MapType.normal,
                 initialCameraPosition:
-                    CameraPosition(target: LatLng(19.058830,72.834670), zoom: 12.0),
+                    CameraPosition(target: LatLng(position.latitude,position.longitude), zoom: 12.0),
                 onMapCreated: onMapCreated,
                 ),
           ),
           Positioned(
-            bottom:30,
+            top:MediaQuery.of(context).size.height-250,
             left: 10,
             child: Container(
               height:125,

@@ -19,10 +19,7 @@ class _MapsPageState extends State<MapsPage> {
   Position position;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
  
-  getCurrentposition()async{
-    position =  await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-  }
+  
 
   void initMarker(specify, specifyId) async {
     var markerIdVal = specifyId;
@@ -161,7 +158,6 @@ class _MapsPageState extends State<MapsPage> {
 
   @override
   void initState() {
-    getCurrentposition();
     getMarkerData();
     super.initState();
     
@@ -182,8 +178,9 @@ class _MapsPageState extends State<MapsPage> {
           backgroundColor: kPrimaryColor,
           
         ),
-        body:Column(children: [
-          Stack(
+        body:
+        Column(
+          children: [Stack(
         children: <Widget>[
                    Container(
                     height: MediaQuery.of(context).size.height-80,
@@ -192,7 +189,7 @@ class _MapsPageState extends State<MapsPage> {
                 markers: Set<Marker>.of(markers.values),
                 mapType: MapType.normal,
                 initialCameraPosition:
-                    CameraPosition(target: LatLng(position.latitude,position.longitude), zoom: 12.0),
+                    CameraPosition(target: LatLng(19.0596,72.8295), zoom: 12.0),
                 onMapCreated: onMapCreated,
                 ),
           ),

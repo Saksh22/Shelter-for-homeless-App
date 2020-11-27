@@ -69,7 +69,10 @@ class _UserHomeState extends State<UserHome> {
           
         ),
         backgroundColor: Color.fromARGB(255,21, 21, 21),
-        body: SafeArea(
+        body: 
+        Builder(
+          builder: (context) => SingleChildScrollView(
+            child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -360,7 +363,9 @@ class _UserHomeState extends State<UserHome> {
             ],
           )
         )
+          )
       ),
+    ),
     );
  
   }
